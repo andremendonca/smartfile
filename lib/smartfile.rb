@@ -22,20 +22,7 @@ class SmartFile
 
   # valid formats - [json] [json-p] [json-t] [html] [xhtml] [txt] [xml]
   def setup(endpoint, format = "json")
-    case endpoint
-      when :path_info
-        @service_path = "/ping/?format=#{format}"
-      when :path_data
-        @service_path = "/whoami/?format=#{format}"
-      when :session
-        @service_path = "/session/?format=#{format}"
-      when :ping
-        @service_path = "/ping/?format=#{format}"
-      when :whoami
-        @service_path = "/whoami/?format=#{format}"
-      when :session
-        @service_path = "/session/?format=#{format}"  
-    end
+    @service_path = "/#{endpoint}/?format=#{format}"
   end
 
   def get(params = {}, full_response = false)
@@ -50,7 +37,7 @@ class SmartFile
     @request.basic_auth(@key, @pass)
     @request["User-Agent"] = "smartfile_rubygem_1.0"
     @response = http.request(@request)
-    
+
     if full_response
       return @response
     else
@@ -70,13 +57,11 @@ class SmartFile
     @request.basic_auth(@key, @pass)
     @request.set_form_data(params)
     @response = http.request(@request)
-    
+
     if full_response
       return @response
     else
       return @response.body
     end
   end
-
-
 end
